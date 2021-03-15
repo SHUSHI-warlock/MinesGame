@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1145
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinesGame", "MinesGame\MinesGame.csproj", "{84282F5F-FE35-4B34-AA80-5BD6CDF9074F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{84282F5F-FE35-4B34-AA80-5BD6CDF9074F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84282F5F-FE35-4B34-AA80-5BD6CDF9074F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84282F5F-FE35-4B34-AA80-5BD6CDF9074F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84282F5F-FE35-4B34-AA80-5BD6CDF9074F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B0BE2074-CF53-483A-89ED-18A5F05315C1}
+	EndGlobalSection
+EndGlobal
