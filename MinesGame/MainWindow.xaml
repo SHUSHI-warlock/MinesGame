@@ -4,9 +4,126 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MinesGame"
+        xmlns:local1="clr-namespace:MinesGame.Converter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="扫雷" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Topmost="True" >
+    <Window.Resources>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <local1:FlagStyleConverter x:Key="flagStyleConverter"/>
+        <local1:FlagConverter x:Key="flagConverter"/>   
+        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        <Style x:Key="BlockButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+
+                            <!--没点开-->
+                            <DataTrigger Binding="{Binding Path=IsOpen}" Value="false">
+                                <Setter Property="Content" Value=""></Setter>
+                                </DataTrigger>
+                            <!--已经点开了-->                            
+                            <DataTrigger Binding="{Binding Path=IsOpen}" Value="true">
+                                <Setter Property="Content" Value="{Binding Path=Flag,Converter = {StaticResource flagConverter}}" ></Setter>
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="Foreground"  Value="{Binding Path=Flag, Converter = {StaticResource flagStyleConverter}}"/>
+                                <Setter Property="FontWeight" Value="Heavy"/>
+                                <Setter Property="FontSize" Value="18"/>
+                            </DataTrigger>
+                            <!-- 鼠标放上来
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            -->
+                            <!-- 按下去
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                            -->
+                            <!-- 失效时
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                            -->
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <DockPanel>
+            <!--停靠布局-->
+            <Menu DockPanel.Dock="Top" Height="20">
+                <MenuItem Header="开始">
+                    <MenuItem x:Name="NewGame_Button" Click="NewGame_Click" Header="新游戏"/>
+                    <Separator />
+                    <MenuItem x:Name="Primary_Button" Click="Primary_Button_Click" Header="初级"/>
+                    <MenuItem x:Name="Middle_Button" Click="Middle_Button_Click" Header="中级"/>
+                    <MenuItem x:Name="High_Button" Click="High_Button_Click" Header="高级"/>
+                    <MenuItem x:Name="Setting_Button" Click="Setting_Button_Click" Header="自定义"/>
+
+                    <Separator />
+                    <MenuItem x:Name="Exit_Button" Click="Exit_Button_Click" Header="退出"/>
+                </MenuItem>
+                <MenuItem x:Name="Info_Button" Header="说明" Click="Info_Button_Click" />
+                <MenuItem x:Name="About_Button" Click="About_Button_Click"  Header="关于"/>
+            </Menu>
+            <StatusBar DockPanel.Dock="Bottom" Height="20">
+                <TextBlock Text="不知道写什么好，反正先空着"></TextBlock>
+            </StatusBar>
+            <!--游戏主体-->
+            <DockPanel x:Name="MainDock">
+                <Grid x:Name="TimeBar" DockPanel.Dock="Top" Height="40">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="TimeBlock"  Grid.Column="0" FontSize="18" Foreground="Pink" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <Path Grid.Column="1" Width="30" Height="30" Stretch="Uniform"  Fill="#FFD700" Data="M256 512c141.385 0 256-114.615 256-256s-114.615-256-256-256-256 114.615-256 256 114.615 256 256 256zM256 48c114.875 0 208 93.125 208 208s-93.125 208-208 208-208-93.125-208-208 93.125-208 208-208zM128 160c0-17.673 14.327-32 32-32s32 14.327 32 32c0 17.673-14.327 32-32 32-17.673 0-32-14.327-32-32zM320 160c0-17.673 14.327-32 32-32s32 14.327 32 32c0 17.673-14.327 32-32 32-17.673 0-32-14.327-32-32zM352.049 313.63l41.164 24.698c-27.981 46.535-78.958 77.672-137.213 77.672s-109.232-31.137-137.213-77.672l41.164-24.698c19.587 32.574 55.271 54.37 96.049 54.37s76.462-21.796 96.049-54.37z" />
+                    <TextBlock x:Name="MineBlock"  Grid.Column="2" FontSize="18" Foreground="LightSalmon" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                </Grid>
+
+                <Grid x:Name="Mainbody">
+
+                </Grid>
+            </DockPanel>
+        </DockPanel>
     </Grid>
 </Window>
